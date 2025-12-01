@@ -103,7 +103,34 @@ body {
 .subtitle {
   font-size: 0.9rem;
   color: #666;
+  margin-bottom: 1.2rem;
+}
+
+/* Stats */
+.stats {
   margin-bottom: 1.5rem;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.stat-label {
+  color: #555;
+}
+
+.stat-value {
+  font-weight: 600;
+}
+
+.stat-meta {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.6rem;
 }
 
 /* Monster button */
@@ -119,6 +146,7 @@ body {
   background: #fafafa;
   transition: transform 0.08s ease, box-shadow 0.08s ease,
     background-color 0.08s ease;
+  cursor: pointer;
 }
 
 .monster-button:hover {
@@ -148,13 +176,13 @@ body {
   margin-bottom: 0.75rem;
 }
 
-/* Video wrapper */
+/* Portrait video wrapper (Sora) */
 .video-wrapper {
   position: relative;
   width: 100%;
-  max-width: 260px;     /* caps the portrait video size */
+  max-width: 260px;      /* mobile size */
   margin: 0 auto;
-  aspect-ratio: 9 / 16; /* perfect for Sora portrait videos */
+  aspect-ratio: 9 / 16;  /* portrait phone shape */
   overflow: hidden;
   border-radius: 12px;
   background: #000;
@@ -168,29 +196,6 @@ body {
   object-fit: cover;
   border-radius: 12px;
   display: block;
-}
-
-
-
-.video-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 12px;
-  border: 1px dashed #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  color: #888;
-  background: linear-gradient(135deg, #fafafa, #f0f0f0);
-}
-
-/* If you use an actual iframe: */
-.video-wrapper iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  border-radius: 12px;
 }
 
 /* Thought section */
@@ -207,6 +212,57 @@ body {
   font-size: 0.75rem;
   color: #777;
   line-height: 1.5;
+}
+
+/* Monster popup modal */
+.monster-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 999;
+}
+
+.monster-modal-backdrop.is-visible {
+  display: flex;
+}
+
+.monster-modal {
+  background: #ffffff;
+  border-radius: 18px;
+  max-width: 360px;
+  width: 100%;
+  padding: 1.5rem 1.4rem;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+  text-align: left;
+}
+
+.monster-modal h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+}
+
+.monster-modal p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.monster-modal-close {
+  display: inline-block;
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid #111;
+  background: #fafafa;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.monster-modal-close:hover {
+  background: #ffffff;
 }
 
 /* Responsive behavior */
@@ -231,6 +287,10 @@ body {
   .answer {
     font-size: 4.6rem;
   }
+
+  .video-wrapper {
+    max-width: 320px; /* slightly bigger on desktop */
+  }
 }
 
 @media (max-width: 480px) {
@@ -250,10 +310,3 @@ body {
     font-size: 3.2rem;
   }
 }
-
-@media (min-width: 768px) {
-  .video-wrapper {
-    max-width: 320px; /* a little larger on desktop, still not overwhelming */
-  }
-}
-

@@ -14,6 +14,7 @@
     </header>
 
     <main class="main">
+      <!-- Left: main status card -->
       <section class="status-card">
         <h1>Has Chris been paid yet?</h1>
 
@@ -31,37 +32,53 @@
           Refresh for continued disappointment.
         </p>
 
-        <!-- Update this href with your actual support / Ko-fi / Stripe link -->
-        <a
+        <!-- Stats section -->
+        <section class="stats">
+          <div class="stat">
+            <div class="stat-label">Estimated Monsters since shutdown</div>
+            <div class="stat-value" id="monster-count">--</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Estimated White Monster cost</div>
+            <div class="stat-value" id="monster-cost">$--</div>
+          </div>
+          <p class="stat-meta" id="monster-meta">
+            <!-- Filled in by JS -->
+          </p>
+        </section>
+
+        <!-- Funny button -->
+        <button
+          type="button"
           class="monster-button"
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
+          id="monsterButton"
         >
           Buy Chris a White Monster
-        </a>
+        </button>
       </section>
 
+      <!-- Right: video + thought -->
       <section class="side-panel">
         <section class="video-section">
           <h2>Today’s status video</h2>
           <div class="video-wrapper">
-        <video
-        src="status.mp4"
-        controls
-        autoplay
-        muted
-        loop
-        playsinline
-        ></video>
-        </div>
+            <!-- Portrait Sora video -->
+            <video
+              src="sora-status.mp4"
+              autoplay
+              muted
+              loop
+              playsinline
+              controls
+            ></video>
+          </div>
         </section>
 
         <section class="thought-section">
           <h2>What’s on Chris’s mind today?</h2>
-          <!-- Later you can wire this up to AI / JSON. For now, static text. -->
+          <!-- You can later wire this up to AI; for now it's static. -->
           <p id="thought-text">
-            On its way any day now!
+            Any day now :)
           </p>
         </section>
       </section>
@@ -76,11 +93,30 @@
     </footer>
   </div>
 
+  <!-- Monster popup modal -->
+  <div class="monster-modal-backdrop" id="monsterModal">
+    <div class="monster-modal">
+      <h2>Monster Request Submitted</h2>
+      <p id="monsterMessage">
+        Your request is being routed through several important-looking inboxes...
+      </p>
+      <button type="button" class="monster-modal-close" id="monsterClose">
+        Close
+      </button>
+    </div>
+  </div>
+
   <script>
     (function () {
-      // Shutdown start: 30 September 2025 (months are 0-based in JS: 8 = September)
+      // ===== CONFIGURABLE NUMBERS =====
+      // Shutdown start: 30 September 2025 (months are 0-based: 8 = September)
       var shutdownStart = new Date(2025, 8, 30);
 
+      // Fun assumptions for the stats (tweak as desired)
+      var MONSTERS_PER_DAY = 1.2;      // average Monsters per day
+      var COST_PER_MONSTER = 2.75;     // dollars per Monster
+
+      // ===== DAYS SINCE SHUTDOWN =====
       function normalizeToLocalMidnight(date) {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate());
       }
@@ -93,9 +129,79 @@
       var oneDayMs = 24 * 60 * 60 * 1000;
       var days = diffMs >= 0 ? Math.floor(diffMs / oneDayMs) : 0;
 
-      var el = document.getElementById("days-since");
-      if (el) {
-        el.textContent = days.toString();
+      var daysEl = document.getElementById("days-since");
+      if (daysEl) {
+        daysEl.textContent = days.toString();
+      }
+
+      // ===== MONSTER STATS =====
+      var monsterCountEl = document.getElementById("monster-count");
+      var monsterCostEl = document.getElementById("monster-cost");
+      var monsterMetaEl = document.getElementById("monster-meta");
+
+      if (monsterCountEl && monsterCostEl) {
+        // estimated number of Monsters (rounded to whole cans)
+        var estCans = Math.round(days * MONSTERS_PER_DAY);
+        var estCost = estCans * COST_PER_MONSTER;
+
+        monsterCountEl.textContent = estCans.toString();
+        monsterCostEl.textContent = "$" + estCost.toFixed(2);
+
+        if (monsterMetaEl) {
+          monsterMetaEl.textContent =
+            "Based on roughly " +
+            MONSTERS_PER_DAY.toFixed(1) +
+            " White Monsters per day at $" +
+            COST_PER_MONSTER.toFixed(2) +
+            " each. Completely unscientific. Extremely accurate.";
+        }
+      }
+
+      // ===== MONSTER POPUP =====
+      var button = document.getElementById("monsterButton");
+      var modal = document.getElementById("monsterModal");
+      var closeBtn = document.getElementById("monsterClose");
+      var msgEl = document.getElementById("monsterMessage");
+
+      var messages = [
+        "Your generous attempt to buy Chris a White Monster has been forwarded to the Department of Hypothetical Caffeination. Current status: Pending… forever.",
+        "Great news: your Monster request was approved in principle and routed to a committee for additional discussion. Estimated delivery: 4–6 fiscal years.",
+        "The system has logged your intent to buy Chris a White Monster. Unfortunately, intent is not yet billable in his bank account.",
+        "Your Monster donation is stuck in Processing Step 7 of 12. No one is quite sure what Steps 1–6 were.",
+        "Chris deeply appreciates the thought. The Monster, however, remains theoretical.",
+        "Compliance check complete: your Monster request is fully compliant with all regulations and therefore must wait for additional guidance.",
+        "Your Monster has been shipped to a secure undisclosed location for taste-testing and quality assurance."
+      ];
+
+      function showMonsterModal() {
+        if (!modal) return;
+        var random = messages[Math.floor(Math.random() * messages.length)];
+        if (msgEl) msgEl.textContent = random;
+        modal.classList.add("is-visible");
+      }
+
+      function hideMonsterModal() {
+        if (!modal) return;
+        modal.classList.remove("is-visible");
+      }
+
+      if (button) {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+          showMonsterModal();
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener("click", hideMonsterModal);
+      }
+
+      if (modal) {
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) {
+            hideMonsterModal(); // click outside to close
+          }
+        });
       }
     })();
   </script>
