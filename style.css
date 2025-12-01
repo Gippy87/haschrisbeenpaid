@@ -1,241 +1,233 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2867
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-\f0\fs24 \cf0 /* Basic reset */\
-*,\
-*::before,\
-*::after \{\
-  box-sizing: border-box;\
-  margin: 0;\
-  padding: 0;\
-\}\
-\
-html,\
-body \{\
-  height: 100%;\
-\}\
-\
-body \{\
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",\
-    sans-serif;\
-  background: #f5f5f5;\
-  color: #111;\
-  -webkit-font-smoothing: antialiased;\
-\}\
-\
-/* Layout */\
-.page \{\
-  min-height: 100vh;\
-  display: flex;\
-  flex-direction: column;\
-  padding: 1.5rem;\
-\}\
-\
-.site-header,\
-.site-footer \{\
-  max-width: 900px;\
-  width: 100%;\
-  margin: 0 auto;\
-\}\
-\
-.main \{\
-  flex: 1;\
-  display: flex;\
-  flex-direction: column;\
-  gap: 1.5rem;\
-  max-width: 900px;\
-  width: 100%;\
-  margin: 1.5rem auto;\
-\}\
-\
-/* Header */\
-.site-header \{\
-  display: flex;\
-  align-items: center;\
-  gap: 0.6rem;\
-\}\
-\
-.logo-dot \{\
-  width: 12px;\
-  height: 12px;\
-  border-radius: 50%;\
-  border: 1px solid #111;\
-\}\
-\
-.site-title \{\
-  font-size: 0.95rem;\
-  letter-spacing: 0.06em;\
-  text-transform: uppercase;\
-\}\
-\
-/* Status card */\
-.status-card \{\
-  background: #ffffff;\
-  border-radius: 18px;\
-  padding: 1.75rem 1.5rem;\
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.04);\
-\}\
-\
-.status-card h1 \{\
-  font-size: 1.6rem;\
-  line-height: 1.1;\
-  margin-bottom: 1.25rem;\
-\}\
-\
-.answer \{\
-  font-size: 4rem;\
-  font-weight: 700;\
-  letter-spacing: 0.08em;\
-  text-transform: uppercase;\
-  margin-bottom: 0.75rem;\
-\}\
-\
-.answer-no \{\
-  color: #e53935;\
-\}\
-\
-.days-line \{\
-  font-size: 0.95rem;\
-  margin-bottom: 0.6rem;\
-\}\
-\
-.days-line span \{\
-  font-weight: 600;\
-\}\
-\
-.subtitle \{\
-  font-size: 0.9rem;\
-  color: #666;\
-  margin-bottom: 1.5rem;\
-\}\
-\
-/* Monster button */\
-.monster-button \{\
-  display: inline-block;\
-  padding: 0.7rem 1.4rem;\
-  border-radius: 999px;\
-  border: 1px solid #111;\
-  text-decoration: none;\
-  font-size: 0.9rem;\
-  font-weight: 500;\
-  color: #111;\
-  background: #fafafa;\
-  transition: transform 0.08s ease, box-shadow 0.08s ease,\
-    background-color 0.08s ease;\
-\}\
-\
-.monster-button:hover \{\
-  transform: translateY(-1px);\
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);\
-  background-color: #ffffff;\
-\}\
-\
-/* Right side panel */\
-.side-panel \{\
-  display: flex;\
-  flex-direction: column;\
-  gap: 1.5rem;\
-\}\
-\
-.video-section,\
-.thought-section \{\
-  background: #ffffff;\
-  border-radius: 18px;\
-  padding: 1.4rem 1.3rem;\
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);\
-\}\
-\
-.video-section h2,\
-.thought-section h2 \{\
-  font-size: 1.05rem;\
-  margin-bottom: 0.75rem;\
-\}\
-\
-/* Video wrapper */\
-.video-wrapper \{\
-  width: 100%;\
-\}\
-\
-.video-placeholder \{\
-  width: 100%;\
-  aspect-ratio: 16 / 9;\
-  border-radius: 12px;\
-  border: 1px dashed #ccc;\
-  display: flex;\
-  align-items: center;\
-  justify-content: center;\
-  font-size: 0.85rem;\
-  color: #888;\
-  background: linear-gradient(135deg, #fafafa, #f0f0f0);\
-\}\
-\
-/* If you use an actual iframe: */\
-.video-wrapper iframe \{\
-  width: 100%;\
-  height: 100%;\
-  border: 0;\
-  border-radius: 12px;\
-\}\
-\
-/* Thought section */\
-.thought-section p \{\
-  font-size: 0.95rem;\
-  line-height: 1.5;\
-\}\
-\
-/* Footer */\
-.site-footer \{\
-  margin-top: 1.5rem;\
-  padding-top: 1rem;\
-  border-top: 1px solid #ddd;\
-  font-size: 0.75rem;\
-  color: #777;\
-  line-height: 1.5;\
-\}\
-\
-/* Responsive behavior */\
-@media (min-width: 768px) \{\
-  .main \{\
-    flex-direction: row;\
-    align-items: stretch;\
-  \}\
-\
-  .status-card \{\
-    flex: 1.1;\
-  \}\
-\
-  .side-panel \{\
-    flex: 0.9;\
-  \}\
-\
-  .status-card h1 \{\
-    font-size: 1.9rem;\
-  \}\
-\
-  .answer \{\
-    font-size: 4.6rem;\
-  \}\
-\}\
-\
-@media (max-width: 480px) \{\
-  .page \{\
-    padding: 1.2rem;\
-  \}\
-\
-  .status-card \{\
-    padding: 1.5rem 1.1rem;\
-  \}\
-\
-  .status-card h1 \{\
-    font-size: 1.4rem;\
-  \}\
-\
-  .answer \{\
-    font-size: 3.2rem;\
-  \}\
-\}\
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #f5f5f5;
+  color: #111;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.site-header,
+.site-footer {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  margin: 1.5rem auto;
+}
+
+/* Header */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #111;
+}
+
+.site-title {
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Status card */
+.status-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.04);
+}
+
+.status-card h1 {
+  font-size: 1.6rem;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+
+.answer {
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.answer-no {
+  color: #e53935;
+}
+
+.days-line {
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+}
+
+.days-line span {
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Monster button */
+.monster-button {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid #111;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #111;
+  background: #fafafa;
+  transition: transform 0.08s ease, box-shadow 0.08s ease,
+    background-color 0.08s ease;
+}
+
+.monster-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+}
+
+/* Right side panel */
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.video-section,
+.thought-section {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.4rem 1.3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.video-section h2,
+.thought-section h2 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Video wrapper */
+.video-wrapper {
+  width: 100%;
+}
+
+.video-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  border: 1px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #888;
+  background: linear-gradient(135deg, #fafafa, #f0f0f0);
+}
+
+/* If you use an actual iframe: */
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+}
+
+/* Thought section */
+.thought-section p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Footer */
+.site-footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+  font-size: 0.75rem;
+  color: #777;
+  line-height: 1.5;
+}
+
+/* Responsive behavior */
+@media (min-width: 768px) {
+  .main {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .status-card {
+    flex: 1.1;
+  }
+
+  .side-panel {
+    flex: 0.9;
+  }
+
+  .status-card h1 {
+    font-size: 1.9rem;
+  }
+
+  .answer {
+    font-size: 4.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 1.2rem;
+  }
+
+  .status-card {
+    padding: 1.5rem 1.1rem;
+  }
+
+  .status-card h1 {
+    font-size: 1.4rem;
+  }
+
+  .answer {
+    font-size: 3.2rem;
+  }
 }
