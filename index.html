@@ -18,9 +18,10 @@
       <section class="status-card">
         <h1>Has Chris been paid yet?</h1>
 
-        <div class="answer answer-no">
-          NO
+        <div class="answer answer-no" id="answerText">
+        NO
         </div>
+
 
         <p class="days-line">
           It has been
@@ -178,6 +179,74 @@
       }
 
       var today = new Date();
+
+      // ===== PROGRESSIVE ANSWER TEXT BASED ON VISITS =====
+      var answerEl = document.getElementById("answerText");
+
+      if (answerEl) {
+        var STORAGE_KEY = "hc_refresh_count";
+
+        var refreshCount = 0;
+        try {
+          var stored = localStorage.getItem(STORAGE_KEY);
+          if (stored !== null) {
+            var parsed = parseInt(stored, 10);
+            if (!isNaN(parsed) && parsed >= 0) {
+              refreshCount = parsed;
+            }
+          }
+        } catch (e) {
+          // If localStorage is blocked, just fall back to 0 every time
+          refreshCount = 0;
+        }
+
+        // Build your progressive responses.
+        // You can expand this to 500+ lines if you want.
+        var responses = [
+          "No.",
+          "Still no.",
+          "Nope. Not yet.",
+          "You’re seriously still curious, huh? Still no.",
+          "Kinda weird how interested you are in this. But no, I haven’t been paid.",
+          "I admire your dedication. Unfortunately, my pay office does not.",
+          "Checking again won’t make the money appear. (I’ve tried.)",
+          "Plot twist: it’s still no.",
+          "I promise I’ll update this when it’s yes. Today is not that day.",
+          "On a scale of 1 to 10, my pay status is still a solid 0.",
+          "You could have finished a Monster by now. Still no pay.",
+          "Think of this as a live demonstration of delayed gratification. Mostly the delayed part.",
+          "Refreshing the page burns more calories than my paycheck has moved.",
+          "At this point, the ‘no’ is kind of a personality trait.",
+          "If persistence made money appear, you’d be rich and so would I. Still no.",
+          "I ran the numbers. The odds of me being paid today: 0.0%.",
+          "This is becoming a ritual now, isn’t it? Still no.",
+          "If this were a movie, we’d still be in the ‘tragic montage’ phase.",
+          "The answer is still no, but your commitment is inspiring.",
+          "Imagine a world where I was paid. This is not that world.",
+          "No. But on the bright side, the Monster stats are thriving.",
+          "Status: unpaid. Vibes: increasingly caffeinated.",
+          "You, me, this website, and a very stubborn ‘no’.",
+          "I’m starting to think you enjoy seeing this answer.",
+          "No pay. Yes sarcasm.",
+          "Breaking news: Chris remains unpaid. More at 11."
+        ];
+
+        // If they refresh more than we have lines for, just stay on the last one.
+        var index =
+          refreshCount < responses.length
+            ? refreshCount
+            : responses.length - 1;
+
+        answerEl.textContent = responses[index];
+
+        // Increment and store for next visit
+        try {
+          localStorage.setItem(STORAGE_KEY, String(refreshCount + 1));
+        } catch (e) {
+          // Ignore storage errors; answer will just reset each time
+        }
+      }
+
 
       // ===== DAYS SINCE SHUTDOWN =====
       var daysSinceShutdown = daysBetween(shutdownStart, today);
