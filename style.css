@@ -152,9 +152,9 @@ body {
 .video-wrapper {
   position: relative;
   width: 100%;
-  max-width: 320px;      /* keeps it from being huge on desktop */
+  max-width: 260px;     /* caps the portrait video size */
   margin: 0 auto;
-  aspect-ratio: 9 / 16;  /* portrait phone shape */
+  aspect-ratio: 9 / 16; /* perfect for Sora portrait videos */
   overflow: hidden;
   border-radius: 12px;
   background: #000;
@@ -165,10 +165,11 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;   /* fills the frame without distortion */
+  object-fit: cover;
   border-radius: 12px;
   display: block;
 }
+
 
 
 .video-placeholder {
@@ -249,3 +250,10 @@ body {
     font-size: 3.2rem;
   }
 }
+
+@media (min-width: 768px) {
+  .video-wrapper {
+    max-width: 320px; /* a little larger on desktop, still not overwhelming */
+  }
+}
+
