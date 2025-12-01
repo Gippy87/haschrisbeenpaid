@@ -1,99 +1,115 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <title>Has Chris Been Paid?</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.2">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
 </head>
 <body>
-  <div class="page">
-    <header class="site-header">
-      <div class="logo-dot"></div>
-      <span class="site-title">HasChrisBeenPaid.com</span>
-    </header>
-
-    <main class="main">
-      <section class="status-card">
-        <h1>Has Chris been paid yet?</h1>
-
-        <div class="answer answer-no">
-          NO
-        </div>
-
-        <p class="days-line">
-          It has been
-          <span id="days-since">--</span>
-          days since the shutdown began.
-        </p>
-
-        <p class="subtitle">
-          Refresh for continued disappointment.
-        </p>
-
-        <!-- Update this href with your actual support / Ko-fi / Stripe link -->
-        <a
-          class="monster-button"
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Buy Chris a White Monster
-        </a>
-      </section>
-
-      <section class="side-panel">
-        <section class="video-section">
-          <h2>Today’s status video</h2>
-          <div class="video-wrapper">
-            <!-- Replace src with your Sora video URL or embedded player -->
-            <div class="video-placeholder">
-              <span>Add your Sora video embed here.</span>
-            </div>
-          </div>
-        </section>
-
-        <section class="thought-section">
-          <h2>What’s on Chris’s mind today?</h2>
-          <!-- Later you can wire this up to AI / JSON. For now, static text. -->
-          <p id="thought-text">
-            Day after day of waiting. Hope is low, caffeine is high.
-          </p>
-        </section>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <p>
-        This is a personal humor site. Views expressed here are Chris’s alone
-        and do not represent the Department of Defense, the U.S. Air Force, or
-        the Air National Guard.
-      </p>
-    </footer>
-  </div>
-
-  <script>
-    (function () {
-      // Shutdown start: 30 September 2025 (months are 0-based in JS: 8 = September)
-      var shutdownStart = new Date(2025, 8, 30);
-
-      function normalizeToLocalMidnight(date) {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      }
-
-      var today = new Date();
-      var start = normalizeToLocalMidnight(shutdownStart);
-      var now = normalizeToLocalMidnight(today);
-
-      var diffMs = now - start;
-      var oneDayMs = 24 * 60 * 60 * 1000;
-      var days = diffMs >= 0 ? Math.floor(diffMs / oneDayMs) : 0;
-
-      var el = document.getElementById("days-since");
-      if (el) {
-        el.textContent = days.toString();
-      }
-    })();
-  </script>
+<p class="p1">&lt;!doctype html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="utf-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Has Chris Been Paid?&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" href="style.css" /&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="page"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;header class="site-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="logo-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="site-title"&gt;HasChrisBeenPaid.com&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;main class="main"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;section class="status-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;Has Chris been paid yet?&lt;/h1&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="answer answer-no"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>NO</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="days-line"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>It has been</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span id="days-since"&gt;--&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>days since the shutdown began.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="subtitle"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Refresh for continued disappointment.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Update this href with your actual support / Ko-fi / Stripe link --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a</p>
+<p class="p1"><span class="Apple-converted-space">          </span>class="monster-button"</p>
+<p class="p1"><span class="Apple-converted-space">          </span>href="#"</p>
+<p class="p1"><span class="Apple-converted-space">          </span>target="_blank"</p>
+<p class="p1"><span class="Apple-converted-space">          </span>rel="noopener noreferrer"</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Buy Chris a White Monster</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;section class="side-panel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section class="video-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h2&gt;Today’s status video&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="video-wrapper"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Replace src with your Sora video URL or embedded player --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="video-placeholder"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span&gt;Add your Sora video embed here.&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section class="thought-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h2&gt;What’s on Chris’s mind today?&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;!-- Later you can wire this up to AI / JSON. For now, static text. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p id="thought-text"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>Day after day of waiting. Hope is low, caffeine is high.</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/section&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;footer class="site-footer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>This is a personal humor site. Views expressed here are Chris’s alone</p>
+<p class="p1"><span class="Apple-converted-space">        </span>and do not represent the Department of Defense, the U.S. Air Force, or</p>
+<p class="p1"><span class="Apple-converted-space">        </span>the Air National Guard.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>(function () {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Shutdown start: 30 September 2025 (months are 0-based in JS: 8 = September)</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var shutdownStart = new Date(2025, 8, 30);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>function normalizeToLocalMidnight(date) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return new Date(date.getFullYear(), date.getMonth(), date.getDate());</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var today = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var start = normalizeToLocalMidnight(shutdownStart);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var now = normalizeToLocalMidnight(today);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var diffMs = now - start;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var oneDayMs = 24 * 60 * 60 * 1000;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var days = diffMs &gt;= 0 ? Math.floor(diffMs / oneDayMs) : 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var el = document.getElementById("days-since");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (el) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>el.textContent = days.toString();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>})();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
 </body>
 </html>
