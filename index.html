@@ -309,11 +309,9 @@
   "Still unpaid. Glad you're here for moral support."
         ];
 
-        // If they refresh more than we have lines for, just stay on the last one.
-        var index =
-          refreshCount < responses.length
-            ? refreshCount
-            : responses.length - 1;
+        // loop to beginning 
+        var index = refreshCount % responses.length;
+
 
         answerEl.textContent = responses[index];
 
