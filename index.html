@@ -42,25 +42,68 @@
             <div class="stat-label">Estimated White Monster cost</div>
             <div class="stat-value" id="monster-cost">$--</div>
           </div>
+          <div class="stat">
+            <div class="stat-label">
+              Days since Chris replied-all to that base-wide email
+            </div>
+            <div class="stat-value" id="replyall-days">--</div>
+          </div>
           <p class="stat-meta" id="monster-meta">
             <!-- Filled in by JS -->
           </p>
         </section>
 
-        <!-- Funny button -->
-        <button
-          type="button"
-          class="monster-button"
-          id="monsterButton"
-        >
-          Buy Chris a White Monster
-        </button>
+        <!-- Buttons -->
+        <div class="button-row">
+          <button
+            type="button"
+            class="monster-button"
+            id="monsterButton"
+          >
+            Buy Chris a White Monster
+          </button>
+
+          <button
+            type="button"
+            class="replyall-button"
+            id="replyAllButton"
+          >
+            Reply All again
+          </button>
+        </div>
+
+        <!-- Fake subscription -->
+        <section class="subscribe-section">
+          <h2>Get useless email updates</h2>
+          <p class="subscribe-text">
+            Sign up for completely unhelpful “live” updates about Chris’s pay status.
+          </p>
+          <form class="subscribe-form">
+            <input
+              type="email"
+              id="subscribeEmail"
+              class="subscribe-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+            />
+            <button
+              type="submit"
+              class="subscribe-button"
+              id="subscribeButton"
+            >
+              Subscribe
+            </button>
+          </form>
+          <p class="subscribe-note">
+            We promise to do absolutely nothing useful with this.
+          </p>
+        </section>
       </section>
 
       <!-- Right: video + thought -->
       <section class="side-panel">
         <section class="video-section">
-          <h2>Today’s status video</h2>
+          <h2>Status Update</h2>
           <div class="video-wrapper">
             <!-- Portrait Sora video -->
             <video
@@ -78,7 +121,7 @@
           <h2>What’s on Chris’s mind today?</h2>
           <!-- You can later wire this up to AI; for now it's static. -->
           <p id="thought-text">
-            Any day now :)
+            Hope low, caffeine high.
           </p>
         </section>
       </section>
@@ -93,14 +136,14 @@
     </footer>
   </div>
 
-  <!-- Monster popup modal -->
-  <div class="monster-modal-backdrop" id="monsterModal">
+  <!-- Generic popup modal (used for Monster, Reply-All, and Subscription) -->
+  <div class="monster-modal-backdrop" id="genericModal">
     <div class="monster-modal">
-      <h2>Monster Request Submitted</h2>
-      <p id="monsterMessage">
-        Your request is being routed through several important-looking inboxes...
+      <h2 id="modalTitle">Notification</h2>
+      <p id="modalMessage">
+        Something mildly concerning has occurred.
       </p>
-      <button type="button" class="monster-modal-close" id="monsterClose">
+      <button type="button" class="monster-modal-close" id="modalClose">
         Close
       </button>
     </div>
@@ -112,26 +155,42 @@
       // Shutdown start: 30 September 2025 (months are 0-based: 8 = September)
       var shutdownStart = new Date(2025, 8, 30);
 
+      // TODO: update this to the real date you replied-all
+      // Example: 2025, 10, 7 = 7 November 2025 (months are 0-based)
+      var replyAllDate = new Date(2025, 10, 20);
+
       // Fun assumptions for the stats (tweak as desired)
       var MONSTERS_PER_DAY = 1.2;      // average Monsters per day
       var COST_PER_MONSTER = 2.75;     // dollars per Monster
 
-      // ===== DAYS SINCE SHUTDOWN =====
+      // ===== DAYS HELPERS =====
       function normalizeToLocalMidnight(date) {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate());
       }
 
+      function daysBetween(startDate, endDate) {
+        var start = normalizeToLocalMidnight(startDate);
+        var end = normalizeToLocalMidnight(endDate);
+        var diffMs = end - start;
+        var oneDayMs = 24 * 60 * 60 * 1000;
+        if (diffMs < 0) return 0;
+        return Math.floor(diffMs / oneDayMs);
+      }
+
       var today = new Date();
-      var start = normalizeToLocalMidnight(shutdownStart);
-      var now = normalizeToLocalMidnight(today);
 
-      var diffMs = now - start;
-      var oneDayMs = 24 * 60 * 60 * 1000;
-      var days = diffMs >= 0 ? Math.floor(diffMs / oneDayMs) : 0;
-
+      // ===== DAYS SINCE SHUTDOWN =====
+      var daysSinceShutdown = daysBetween(shutdownStart, today);
       var daysEl = document.getElementById("days-since");
       if (daysEl) {
-        daysEl.textContent = days.toString();
+        daysEl.textContent = daysSinceShutdown.toString();
+      }
+
+      // ===== DAYS SINCE REPLY-ALL =====
+      var daysSinceReplyAll = daysBetween(replyAllDate, today);
+      var replyAllEl = document.getElementById("replyall-days");
+      if (replyAllEl) {
+        replyAllEl.textContent = daysSinceReplyAll.toString();
       }
 
       // ===== MONSTER STATS =====
@@ -141,7 +200,7 @@
 
       if (monsterCountEl && monsterCostEl) {
         // estimated number of Monsters (rounded to whole cans)
-        var estCans = Math.round(days * MONSTERS_PER_DAY);
+        var estCans = Math.round(daysSinceShutdown * MONSTERS_PER_DAY);
         var estCost = estCans * COST_PER_MONSTER;
 
         monsterCountEl.textContent = estCans.toString();
@@ -157,13 +216,40 @@
         }
       }
 
-      // ===== MONSTER POPUP =====
-      var button = document.getElementById("monsterButton");
-      var modal = document.getElementById("monsterModal");
-      var closeBtn = document.getElementById("monsterClose");
-      var msgEl = document.getElementById("monsterMessage");
+      // ===== GENERIC MODAL =====
+      var modal = document.getElementById("genericModal");
+      var modalTitle = document.getElementById("modalTitle");
+      var modalMessage = document.getElementById("modalMessage");
+      var modalClose = document.getElementById("modalClose");
 
-      var messages = [
+      function showModal(title, message) {
+        if (!modal) return;
+        if (modalTitle) modalTitle.textContent = title;
+        if (modalMessage) modalMessage.textContent = message;
+        modal.style.display = "flex";
+      }
+
+      function hideModal() {
+        if (!modal) return;
+        modal.style.display = "none";
+      }
+
+      if (modalClose) {
+        modalClose.addEventListener("click", hideModal);
+      }
+
+      if (modal) {
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) {
+            hideModal(); // click outside to close
+          }
+        });
+      }
+
+      // ===== MONSTER BUTTON LOGIC =====
+      var monsterButton = document.getElementById("monsterButton");
+
+      var monsterMessages = [
         "Your generous attempt to buy Chris a White Monster has been forwarded to the Department of Hypothetical Caffeination. Current status: Pending… forever.",
         "Great news: your Monster request was approved in principle and routed to a committee for additional discussion. Estimated delivery: 4–6 fiscal years.",
         "The system has logged your intent to buy Chris a White Monster. Unfortunately, intent is not yet billable in his bank account.",
@@ -173,34 +259,72 @@
         "Your Monster has been shipped to a secure undisclosed location for taste-testing and quality assurance."
       ];
 
-      function showMonsterModal() {
-        if (!modal) return;
-        var random = messages[Math.floor(Math.random() * messages.length)];
-        if (msgEl) msgEl.textContent = random;
-        modal.classList.add("is-visible");
-      }
-
-      function hideMonsterModal() {
-        if (!modal) return;
-        modal.classList.remove("is-visible");
-      }
-
-      if (button) {
-        button.addEventListener("click", function (e) {
+      if (monsterButton) {
+        monsterButton.addEventListener("click", function (e) {
           e.preventDefault();
-          showMonsterModal();
+          var msg =
+            monsterMessages[
+              Math.floor(Math.random() * monsterMessages.length)
+            ];
+          showModal("Monster Request Submitted", msg);
         });
       }
 
-      if (closeBtn) {
-        closeBtn.addEventListener("click", hideMonsterModal);
+      // ===== REPLY-ALL BUTTON LOGIC =====
+      var replyAllButton = document.getElementById("replyAllButton");
+
+      var replyAllMessages = [
+        "Your reply-all has been broadcast to the entire base. Several people you’ve never met are now emotionally invested in your pay status.",
+        "Congratulations! You have replied-all. Outlook inbox stability: compromised.",
+        "Your reply-all has triggered 47 out-of-office replies, 3 confused responses, and 1 silent judgment.",
+        "The base-wide email thread has acknowledged your existence. Pay status: still ‘lol no.’",
+        "Your reply-all has been archived in the Museum of Questionable Email Decisions.",
+        "Command has not responded, but at least 1,200 people know you weren’t paid."
+      ];
+
+      if (replyAllButton) {
+        replyAllButton.addEventListener("click", function (e) {
+          e.preventDefault();
+          var msg =
+            replyAllMessages[
+              Math.floor(Math.random() * replyAllMessages.length)
+            ];
+          showModal("Reply-All Sent (Again)", msg);
+        });
       }
 
-      if (modal) {
-        modal.addEventListener("click", function (e) {
-          if (e.target === modal) {
-            hideMonsterModal(); // click outside to close
+      // ===== FAKE SUBSCRIPTION LOGIC =====
+      var subscribeForm = document.querySelector(".subscribe-form");
+      var subscribeInput = document.getElementById("subscribeEmail");
+
+      var subscriptionMessages = [
+        "Thanks! Your email has been carefully filed in a folder labeled ‘Someday’ and will never be opened.",
+        "You are now subscribed to Chris’s Useless Pay Updates. Expect zero emails at highly unpredictable intervals.",
+        "Subscription confirmed. Your inbox has been spared from any meaningful communication.",
+        "We’ve successfully ignored your subscription request. You will be the first to not know when Chris gets paid.",
+        "Your email has been forwarded to a cardboard box under someone’s desk for long-term storage."
+      ];
+
+      if (subscribeForm) {
+        subscribeForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var email = subscribeInput ? subscribeInput.value.trim() : "";
+
+          var baseMsg =
+            subscriptionMessages[
+              Math.floor(Math.random() * subscriptionMessages.length)
+            ];
+
+          var message = baseMsg;
+          if (email) {
+            message += " (We especially appreciate the trust from " + email + ".)";
           }
+
+          if (subscribeInput) {
+            subscribeInput.value = "";
+          }
+
+          showModal("Useless Subscription Confirmed", message);
         });
       }
     })();

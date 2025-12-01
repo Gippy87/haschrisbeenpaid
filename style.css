@@ -117,14 +117,17 @@ body {
   align-items: baseline;
   font-size: 0.9rem;
   margin-bottom: 0.3rem;
+  gap: 0.75rem;
 }
 
 .stat-label {
   color: #555;
+  flex: 1;
 }
 
 .stat-value {
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .stat-meta {
@@ -133,14 +136,22 @@ body {
   margin-top: 0.6rem;
 }
 
-/* Monster button */
-.monster-button {
+/* Buttons row */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.monster-button,
+.replyall-button {
   display: inline-block;
-  padding: 0.7rem 1.4rem;
+  padding: 0.7rem 1.1rem;
   border-radius: 999px;
   border: 1px solid #111;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: #111;
   background: #fafafa;
@@ -149,10 +160,62 @@ body {
   cursor: pointer;
 }
 
-.monster-button:hover {
+.monster-button:hover,
+.replyall-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   background-color: #ffffff;
+}
+
+/* Subscribe section */
+.subscribe-section {
+  border-top: 1px solid #eee;
+  padding-top: 1.4rem;
+}
+
+.subscribe-section h2 {
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.subscribe-text {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.8rem;
+}
+
+.subscribe-form {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.subscribe-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #ccc;
+  font-size: 0.85rem;
+}
+
+.subscribe-button {
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid #111;
+  background: #fafafa;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.subscribe-button:hover {
+  background: #ffffff;
+}
+
+.subscribe-note {
+  font-size: 0.8rem;
+  color: #888;
 }
 
 /* Right side panel */
@@ -214,7 +277,7 @@ body {
   line-height: 1.5;
 }
 
-/* Monster popup modal */
+/* Generic popup modal */
 .monster-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -224,10 +287,6 @@ body {
   justify-content: center;
   padding: 1.5rem;
   z-index: 999;
-}
-
-.monster-modal-backdrop.is-visible {
-  display: flex;
 }
 
 .monster-modal {
@@ -308,5 +367,15 @@ body {
 
   .answer {
     font-size: 3.2rem;
+  }
+
+  .subscribe-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .subscribe-button {
+    width: 100%;
+    text-align: center;
   }
 }
