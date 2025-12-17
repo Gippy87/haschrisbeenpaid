@@ -5,155 +5,215 @@
   <title>Chris Has Been Paid</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Rain overlay */
+    .rain-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .bill {
+      position: absolute;
+      top: -12vh;
+      left: 0;
+      font-size: 26px;
+      opacity: 0.9;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+      animation-name: fall, sway, spin;
+      animation-timing-function: linear, ease-in-out, linear;
+      animation-iteration-count: infinite, infinite, infinite;
+      will-change: transform;
+      user-select: none;
+    }
+
+    @keyframes fall {
+      from { transform: translate3d(0, -12vh, 0); }
+      to   { transform: translate3d(0, 115vh, 0); }
+    }
+
+    @keyframes sway {
+      0%   { margin-left: -18px; }
+      50%  { margin-left:  18px; }
+      100% { margin-left: -18px; }
+    }
+
+    @keyframes spin {
+      from { rotate: 0deg; }
+      to   { rotate: 360deg; }
+    }
+
+    /* Victory card styling (keeps your site vibe) */
+    .paid-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .paid-hero {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.04);
+      text-align: center;
+    }
+
+    .paid-hero h1 {
+      font-size: 2rem;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .paid-hero .big {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin: 0.25rem 0 0.75rem;
+    }
+
+    .paid-hero .sub {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .paid-actions {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .paid-btn {
+      display: inline-block;
+      padding: 0.7rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid #111;
+      background: #fafafa;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+    }
+
+    .paid-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      background: #fff;
+    }
+
+    /* Make it feel good on mobile */
+    @media (max-width: 480px) {
+      .paid-hero h1 { font-size: 1.6rem; }
+      .paid-hero .big { font-size: 2.6rem; }
+      .bill { font-size: 22px; }
+    }
+  </style>
 </head>
 <body>
+  <div class="rain-layer" id="rainLayer" aria-hidden="true"></div>
+
   <div class="page">
     <header class="site-header">
       <div class="logo-dot"></div>
       <span class="site-title">HasChrisBeenPaid.com</span>
     </header>
 
-    <main class="main">
-      <section class="status-card">
+    <main class="paid-wrap" style="margin-top: 1.5rem;">
+      <section class="paid-hero">
         <h1>Has Chris been paid?</h1>
+        <div class="big" style="color:#2e7d32;">YES.</div>
+        <p class="sub">
+          The deposit has arrived. The saga is complete. The refresh button may rest.
+        </p>
 
-        <div class="answer answer-yes" id="answerText">
-          YES
+        <div class="paid-actions">
+          <button class="paid-btn" id="toggleRainBtn" type="button">Toggle rain</button>
+          <button class="paid-btn" id="moreRainBtn" type="button">More bills</button>
         </div>
-
-        <p class="days-line">
-          After
-          <span id="days-since">--</span>
-          days of uncertainty, caffeine, and questionable refresh behavior.
-        </p>
-
-        <p class="subtitle">
-          Against all odds… the system worked.
-        </p>
-
-        <section class="stats">
-          <div class="stat">
-            <div class="stat-label">Total days unpaid</div>
-            <div class="stat-value" id="days-unpaid">--</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Estimated White Monsters consumed</div>
-            <div class="stat-value" id="monster-count">--</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Estimated Monster budget damage</div>
-            <div class="stat-value" id="monster-cost">$--</div>
-          </div>
-        </section>
-
-        <p class="stat-meta">
-          The Monster tab has been paid. Emotionally? We’re still processing.
-        </p>
-
-        <button
-          type="button"
-          class="monster-button"
-          id="victoryButton"
-        >
-          Reflect on this journey
-        </button>
-      </section>
-
-      <section class="side-panel">
-        <section class="thought-section">
-          <h2>Final status update</h2>
-          <p id="finalThought">
-            Chris checked his bank account.  
-            Then checked it again.  
-            Then stared at it quietly for a while.
-          </p>
-        </section>
-
-        <section class="thought-section">
-          <h2>What happens now?</h2>
-          <p>
-            Nothing. The site has fulfilled its purpose.  
-            You may stop refreshing.
-          </p>
-          <p style="margin-top:0.6rem; color:#666;">
-            (You won’t. But you may.)
-          </p>
-        </section>
       </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer" style="max-width:900px;margin:1.5rem auto 0;">
       <p>
-        This website commemorates a temporary payroll anomaly, one legendary
-        reply-all, and an unreasonable amount of caffeine.  
-        No systems were harmed. Several nerves were tested.
+        This is a personal humor site. Views expressed here are Chris’s alone and do not represent the
+        Department of Defense, the U.S. Air Force, or the Air National Guard.
       </p>
     </footer>
   </div>
 
-  <!-- Victory modal -->
-  <div class="monster-modal-backdrop" id="victoryModal">
-    <div class="monster-modal">
-      <h2>Payment Confirmed</h2>
-      <p id="victoryMessage">
-        The funds have arrived. The saga is complete.
-      </p>
-      <button type="button" class="monster-modal-close" id="victoryClose">
-        Close
-      </button>
-    </div>
-  </div>
-
   <script>
     (function () {
-      // CONFIG
-      var shutdownStart = new Date(2025, 8, 30); // Sept 30, 2025
-      var paidDate = new Date(); // today
-      var MONSTERS_PER_DAY = 1.2;
-      var COST_PER_MONSTER = 2.75;
+      var layer = document.getElementById("rainLayer");
+      var toggleBtn = document.getElementById("toggleRainBtn");
+      var moreBtn = document.getElementById("moreRainBtn");
 
-      function daysBetween(a, b) {
-        var d1 = new Date(a.getFullYear(), a.getMonth(), a.getDate());
-        var d2 = new Date(b.getFullYear(), b.getMonth(), b.getDate());
-        return Math.max(0, Math.floor((d2 - d1) / 86400000));
+      var raining = true;
+      var BILL_EMOJI = "💵";
+
+      // Performance-safe defaults
+      var billCount = window.matchMedia("(max-width: 480px)").matches ? 26 : 42;
+
+      function rand(min, max) { return Math.random() * (max - min) + min; }
+
+      function createBill() {
+        var el = document.createElement("div");
+        el.className = "bill";
+        el.textContent = BILL_EMOJI;
+
+        // Random placement & speed
+        el.style.left = rand(0, 100) + "vw";
+        el.style.opacity = rand(0.55, 0.95).toFixed(2);
+
+        var fallDur = rand(4.8, 9.5).toFixed(2) + "s";
+        var swayDur = rand(2.2, 4.2).toFixed(2) + "s";
+        var spinDur = rand(2.8, 6.0).toFixed(2) + "s";
+
+        el.style.animationDuration = fallDur + ", " + swayDur + ", " + spinDur;
+        el.style.animationDelay = rand(0, 3.5).toFixed(2) + "s";
+
+        // Vary size a bit
+        el.style.fontSize = rand(18, 34).toFixed(0) + "px";
+
+        layer.appendChild(el);
+
+        // Cleanup old bills occasionally to avoid infinite DOM growth
+        // (animation is infinite, so we periodically re-seed)
       }
 
-      var daysUnpaid = daysBetween(shutdownStart, paidDate);
+      function clearBills() {
+        while (layer.firstChild) layer.removeChild(layer.firstChild);
+      }
 
-      document.getElementById("days-since").textContent = daysUnpaid;
-      document.getElementById("days-unpaid").textContent = daysUnpaid;
+      function seedBills(count) {
+        clearBills();
+        for (var i = 0; i < count; i++) createBill();
+      }
 
-      var monsters = Math.round(daysUnpaid * MONSTERS_PER_DAY);
-      var cost = monsters * COST_PER_MONSTER;
+      function setRaining(on) {
+        raining = on;
+        layer.style.display = on ? "block" : "none";
+      }
 
-      document.getElementById("monster-count").textContent = monsters;
-      document.getElementById("monster-cost").textContent = "$" + cost.toFixed(2);
+      // Initial
+      seedBills(billCount);
+      setRaining(true);
 
-      // Victory modal
-      var btn = document.getElementById("victoryButton");
-      var modal = document.getElementById("victoryModal");
-      var close = document.getElementById("victoryClose");
+      // Re-seed every ~20s to keep things fresh & light
+      setInterval(function () {
+        if (!raining) return;
+        seedBills(billCount);
+      }, 20000);
 
-      var messages = [
-        "Payment received. Sanity slowly returning.",
-        "The deposit cleared. Chris blinked twice to confirm.",
-        "It finally happened. Nobody announced it. It just… appeared.",
-        "Chris has been paid. Refreshing may now be reduced to normal levels.",
-        "The saga concludes not with a bang, but with a bank notification."
-      ];
-
-      btn.addEventListener("click", function () {
-        document.getElementById("victoryMessage").textContent =
-          messages[Math.floor(Math.random() * messages.length)];
-        modal.style.display = "flex";
+      toggleBtn.addEventListener("click", function () {
+        setRaining(!raining);
       });
 
-      close.addEventListener("click", function () {
-        modal.style.display = "none";
-      });
-
-      modal.addEventListener("click", function (e) {
-        if (e.target === modal) modal.style.display = "none";
+      moreBtn.addEventListener("click", function () {
+        billCount = Math.min(billCount + 12, 120); // cap for performance
+        if (raining) seedBills(billCount);
       });
     })();
   </script>
