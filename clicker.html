@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Clicker | Has Chris Been Paid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page clicker-page">
+    <header class="site-header">
+      <div class="logo-dot"></div>
+      <span class="site-title">HasChrisBeenPaid.com</span>
+    </header>
+
+    <main class="clicker-shell">
+      <section class="clicker-card">
+        <div class="clicker-eyebrow"><span class="dot"></span> Clicker Lab</div>
+        <h1>Make it rain clicks</h1>
+        <p class="clicker-lede">
+          Every click on the page or tap of the spacebar adds to your balance. Stack up clicks,
+          then invest them in gadgets that make every press hit harder.
+        </p>
+
+        <div class="clicker-stats">
+          <div class="clicker-stat">
+            <div class="clicker-stat-label">Click balance</div>
+            <div class="clicker-stat-value" id="totalClicks">0</div>
+          </div>
+          <div class="clicker-stat">
+            <div class="clicker-stat-label">Power per press</div>
+            <div class="clicker-stat-value" id="perClick">+1</div>
+          </div>
+        </div>
+
+        <div class="tap-surface" id="tapSurface" tabindex="0" role="button" aria-label="Click or press space to add clicks">
+          <div class="tap-title">Click anywhere. Press space. Profit.</div>
+          <div class="tap-subtitle">Each press adds your current power to the balance.</div>
+          <div class="tap-hint">
+            <span class="hint-key">Space</span>
+            <span>or any click on the page keeps the counter climbing.</span>
+          </div>
+        </div>
+
+        <p class="clicker-note">
+          Purchases use your click balance, but the act of buying still counts as a click. Keep tapping!
+        </p>
+
+        <div class="mini-grid">
+          <div class="mini-card">
+            <div class="mini-label">Total power boosts</div>
+            <div class="mini-value" id="boostsOwned">0 owned</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-label">Lifetime clicks</div>
+            <div class="mini-value" id="lifetimeClicks">0</div>
+          </div>
+        </div>
+
+        <div class="clicker-footer">
+          Progress saves in your browser. Come back any time to pick up where you left off.
+        </div>
+      </section>
+
+      <aside class="shop-card">
+        <h2>Click shop</h2>
+        <div class="shop-note">Trade clicks for beefier presses. Costs rise each time you upgrade.</div>
+        <ul class="shop-items" id="shopList" aria-live="polite"></ul>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var totalEl = document.getElementById("totalClicks");
+      var perClickEl = document.getElementById("perClick");
+      var shopList = document.getElementById("shopList");
+      var boostsOwnedEl = document.getElementById("boostsOwned");
+      var lifetimeEl = document.getElementById("lifetimeClicks");
+      var tapSurface = document.getElementById("tapSurface");
+
+      var STORAGE_KEY = "chbp_clicker_state_v1";
+      var items = [
+        { id: "double-tap", name: "Double Tapper", description: "+2 clicks every press", baseCost: 10, bonus: 2, growth: 1.6 },
+        { id: "spring-core", name: "Spring Core", description: "+5 clicks per press", baseCost: 35, bonus: 5, growth: 1.55 },
+        { id: "servo-pack", name: "Servo Pack", description: "+12 clicks per press", baseCost: 90, bonus: 12, growth: 1.5 },
+        { id: "titan-switch", name: "Titan Switch", description: "+25 clicks per press", baseCost: 220, bonus: 25, growth: 1.45 },
+        { id: "quantum-pad", name: "Quantum Pad", description: "+60 clicks per press", baseCost: 520, bonus: 60, growth: 1.4 }
+      ];
+
+      var state = loadState();
+      var shopNodes = {};
+
+      function loadState() {
+        try {
+          var saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            var parsed = JSON.parse(saved);
+            return mergeWithDefaults(parsed);
+          }
+        } catch (_) {}
+        return mergeWithDefaults({});
+      }
+
+      function mergeWithDefaults(saved) {
+        var base = {
+          clicks: 0,
+          perClick: 1,
+          lifetime: 0,
+          items: {}
+        };
+
+        items.forEach(function (item) {
+          if (!base.items[item.id]) {
+            base.items[item.id] = { cost: item.baseCost, owned: 0 };
+          }
+        });
+
+        var merged = Object.assign({}, base, saved || {});
+        merged.items = Object.assign({}, base.items, merged.items || {});
+        items.forEach(function (item) {
+          if (!merged.items[item.id]) {
+            merged.items[item.id] = { cost: item.baseCost, owned: 0 };
+          } else {
+            if (typeof merged.items[item.id].cost !== "number") {
+              merged.items[item.id].cost = item.baseCost;
+            }
+            if (typeof merged.items[item.id].owned !== "number") {
+              merged.items[item.id].owned = 0;
+            }
+          }
+        });
+        if (typeof merged.clicks !== "number") merged.clicks = 0;
+        if (typeof merged.perClick !== "number") merged.perClick = 1;
+        if (typeof merged.lifetime !== "number") merged.lifetime = merged.clicks;
+        return merged;
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (_) {}
+      }
+
+      function format(num) {
+        return num.toLocaleString("en-US");
+      }
+
+      function addClicks(amount) {
+        state.clicks += amount;
+        state.lifetime += amount;
+        updateUI();
+        saveState();
+      }
+
+      function purchase(itemId) {
+        var item = items.find(function (it) { return it.id === itemId; });
+        if (!item) return;
+        var row = state.items[itemId];
+        if (!row) return;
+        if (state.clicks < row.cost) return;
+
+        state.clicks -= row.cost;
+        state.perClick += item.bonus;
+        row.owned += 1;
+        row.cost = Math.ceil(row.cost * item.growth);
+        updateUI();
+        saveState();
+      }
+
+      function buildShop() {
+        items.forEach(function (item) {
+          var li = document.createElement("li");
+          li.className = "shop-item";
+
+          var top = document.createElement("div");
+          top.className = "shop-top";
+          var name = document.createElement("div");
+          name.className = "shop-name";
+          name.textContent = item.name;
+          var cost = document.createElement("div");
+          cost.className = "shop-cost";
+          cost.id = "cost-" + item.id;
+          top.appendChild(name);
+          top.appendChild(cost);
+
+          var desc = document.createElement("div");
+          desc.className = "shop-desc";
+          desc.textContent = item.description;
+
+          var meta = document.createElement("div");
+          meta.className = "shop-meta";
+          var owned = document.createElement("div");
+          owned.className = "shop-owned";
+          owned.id = "owned-" + item.id;
+          var btn = document.createElement("button");
+          btn.className = "shop-buy";
+          btn.textContent = "Buy";
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            purchase(item.id);
+          });
+
+          meta.appendChild(owned);
+          meta.appendChild(btn);
+          li.appendChild(top);
+          li.appendChild(desc);
+          li.appendChild(meta);
+
+          shopList.appendChild(li);
+          shopNodes[item.id] = { cost: cost, owned: owned, button: btn };
+        });
+      }
+
+      function updateUI() {
+        totalEl.textContent = format(state.clicks);
+        perClickEl.textContent = "+" + format(state.perClick);
+        boostsOwnedEl.textContent = format(totalBoosts()) + " owned";
+        lifetimeEl.textContent = format(state.lifetime);
+
+        items.forEach(function (item) {
+          var data = state.items[item.id];
+          var nodes = shopNodes[item.id];
+          if (!data || !nodes) return;
+          nodes.cost.textContent = format(data.cost) + " clicks";
+          nodes.owned.textContent = "Owned: " + data.owned;
+          nodes.button.disabled = state.clicks < data.cost;
+        });
+      }
+
+      function totalBoosts() {
+        return items.reduce(function (sum, item) {
+          var data = state.items[item.id];
+          return sum + (data ? data.owned : 0);
+        }, 0);
+      }
+
+      function handleSpace(e) {
+        if (e.code === "Space") {
+          e.preventDefault();
+          addClicks(state.perClick);
+        }
+      }
+
+      function handleClick() {
+        addClicks(state.perClick);
+      }
+
+      function init() {
+        buildShop();
+        updateUI();
+        window.addEventListener("keydown", handleSpace);
+        window.addEventListener("pointerdown", handleClick);
+        tapSurface.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            addClicks(state.perClick);
+          }
+        });
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
